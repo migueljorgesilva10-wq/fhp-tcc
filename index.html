@@ -12,4 +12,29 @@
     <section class="section"><div class="section-heading reveal"><p class="eyebrow">POR QUE ESCOLHER</p><h2>Uma conexão feita para acompanhar você</h2><p>Tecnologia e atendimento para os seus momentos mais importantes.</p></div><div class="feature-grid"><article class="feature-card reveal"><span class="icon">↯</span><h3>Alta velocidade</h3><p>Internet para acompanhar sua rotina.</p></article><article class="feature-card reveal"><span class="icon">◉</span><h3>Fibra óptica</h3><p>Tecnologia preparada para alta performance.</p></article><article class="feature-card reveal"><span class="icon">✦</span><h3>Suporte</h3><p>Atendimento e suporte ao cliente.</p></article><article class="feature-card reveal"><span class="icon">⌁</span><h3>Conexão</h3><p>Internet para casa, trabalho, estudos e entretenimento.</p></article></div></section>
     <section class="callout reveal"><div><p class="eyebrow">FHP FIBRA</p><h2>Mais do que internet, conexão.</h2><p>Conectando pessoas, empresas e comunidades através da fibra óptica.</p></div><a class="btn btn-primary" href="quem-somos.html">Conheça a FHP</a></section>
   </main><footer class="site-footer"><div><a class="brand" href="index.html"><span>FHP</span> FIBRA</a><p>Conectando pessoas, empresas e comunidades.</p></div><nav aria-label="Links do rodapé"><a href="index.html">Home</a><a href="quem-somos.html">Quem Somos</a><a href="planos.html">Planos</a><a href="portfolio.html">Portfólio</a><a href="fale-conosco.html">Fale Conosco</a><a href="login.html">Área do Cliente</a></nav><small>© 2026 FHP Fibra — Projeto demonstrativo.</small></footer><script src="js/script.js"></script>
+<script>
+(function(){
+  if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+    window.chatbase=(...arguments)=>{
+      if(!window.chatbase.q){window.chatbase.q=[]}
+      window.chatbase.q.push(arguments)
+    };
+    window.chatbase=new Proxy(window.chatbase,{
+      get(target,prop){
+        if(prop==="q"){return target.q}
+        return(...args)=>target(prop,...args)
+      }
+    })
+  }
+  const onLoad=function(){
+    const script=document.createElement("script");
+    script.src="https://www.chatbase.co/embed.min.js";
+    script.id="AuOTBkVvep2mexqbFBPzh";
+    script.domain="www.chatbase.co";
+    document.body.appendChild(script)
+  };
+  if(document.readyState==="complete"){onLoad()}
+  else{window.addEventListener("load",onLoad)}
+})();
+</script>
 </body></html>
