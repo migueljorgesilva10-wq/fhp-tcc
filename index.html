@@ -1,28 +1,20 @@
-<script>
-  (function(){
-    if(!window.chatbase || window.chatbase("getState") !== "initialized"){
-      window.chatbase = (...arguments) => {
-        if(!window.chatbase.q){ window.chatbase.q = []; }
-        window.chatbase.q.push(arguments);
-      };
-      window.chatbase = new Proxy(window.chatbase, {
-        get(target, prop){
-          if(prop === "q") return target.q;
-          return (...args) => target(prop, ...args);
-        }
-      });
-    }
-    const onLoad = function(){
-      const script = document.createElement("script");
-      script.src = "https://www.chatbase.co/embed.min.js";
-      script.setAttribute("chatbotId", "AuOTBkVvep2mexqbFBPzh");
-      script.domain = "www.chatbase.co";
-      document.body.appendChild(script);
-    };
-    if(document.readyState === "complete"){
-      onLoad();
-    } else {
-      window.addEventListener("load", onLoad);
-    }
-  })();
-</script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FHP Fibra | Internet que conecta</title>
+    <!-- Seus estilos CSS -->
+</head>
+<body>
+
+    <!-- Conteúdo da página (Header, Main, etc.) -->
+    <header>...</header>
+    <main>...</main>
+    <footer>...</footer>
+
+    <!-- COLE O SCRIPT DO CHATBASE AQUI, ANTES DE </body> -->
+    <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="AuOTBkVvep2mexqbFBPzh";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
+</body>
+</html>
