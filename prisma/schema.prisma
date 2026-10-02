@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// nivel: admin | funcionario | cliente
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  usuario   String   @unique
+  nome      String
+  senhaHash String
+  nivel     String   @default("cliente")
+  ativo     Boolean  @default(true)
+  criadoEm  DateTime @default(now())
+
+  cliente  Cliente?
+  sessoes  Sessao[]
+  chamados Chamado[] @relation("Atendente")
+}
+
+model Sessao {
+  id        Int      @id @default(autoincrement())
+  tokenHash String   @unique
+  usuarioId Int
+  expiraEm  DateTime
+  criadoEm  DateTime @default(now())
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+}
+
+// categoria: RESIDENCIAL | EMPRESARIAL
+model Plano {
+  id         Int      @id @default(autoincrement())
+  nome       String   @unique
+  categoria  String   @default("RESIDENCIAL")
+  velocidade Int // Mbps
+  preco      Float?
+  descricao  String?
+  destaque   Boolean  @default(false)
+  ativo      Boolean  @default(true)
+  ordem      Int      @default(0)
+  criadoEm   DateTime @default(now())
+
+  contratos Contrato[]
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int?     @unique
+  nome      String
+  email     String?
+  telefone  String?
+  endereco  String?
+  bairro    String?
+  cidade    String   @default("Rio de Janeiro")
+  criadoEm  DateTime @default(now())
+
+  usuario   Usuario?   @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  contratos Contrato[]
+  chamados  Chamado[]
+}
+
+// status: ATIVO | PENDENTE | SUSPENSO | CANCELADO
+model Contrato {
+  id            Int       @id @default(autoincrement())
+  clienteId     Int
+  planoId       Int
+  status        String    @default("ATIVO")
+  diaVencimento Int       @default(10)
+  inicioEm      DateTime  @default(now())
+  fimEm         DateTime?
+
+  cliente Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  plano   Plano   @relation(fields: [planoId], references: [id])
+
+  @@index([clienteId])
+  @@index([planoId])
+}
+
+// status: ABERTO | EM_ANDAMENTO | RESOLVIDO
+model Chamado {
+  id           Int       @id @default(autoincrement())
+  clienteId    Int
+  atendenteId  Int?
+  assunto      String
+  descricao    String
+  status       String    @default("ABERTO")
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+  resolvidoEm  DateTime?
+
+  cliente   Cliente  @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  atendente Usuario? @relation("Atendente", fields: [atendenteId], references: [id], onDelete: SetNull)
+
+  @@index([clienteId])
+  @@index([status])
+}
+
+// Formulário "Fale Conosco". status: Novo | Lida | Respondida
+model Mensagem {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String
+  telefone String
+  assunto  String
+  texto    String
+  status   String   @default("Novo")
+  criadoEm DateTime @default(now())
+}
