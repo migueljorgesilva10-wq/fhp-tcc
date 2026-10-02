@@ -5,7 +5,7 @@
   "description": "Site e painel da FHP Fibra (projeto demonstrativo) com Prisma + SQLite",
   "scripts": {
     "start": "node server.js",
-    "start:prod": "prisma db push && node prisma/seed.js && node server.js",
+  "start:prod": "DATABASE_URL=file:./dev.db prisma db push && node prisma/seed.js && node server.js",
     "setup": "prisma db push && node prisma/seed.js",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
