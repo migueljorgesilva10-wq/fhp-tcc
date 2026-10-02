@@ -1,1 +1,30 @@
-const demoUsers={admin:{senha:'admin123',nome:'Administrador FHP',nivel:'admin'},funcionario:{senha:'123456',nome:'Equipe FHP',nivel:'funcionario'},cliente:{senha:'123456',nome:'Cliente FHP',nivel:'cliente'}};document.addEventListener('DOMContentLoaded',()=>{const active=JSON.parse(localStorage.getItem('fhpSession')||'null');if(active)location.replace('painel.html');const form=document.querySelector('#login-form'),pass=form.senha,show=document.querySelector('.show-password');show.addEventListener('click',()=>{const visible=pass.type==='text';pass.type=visible?'password':'text';show.setAttribute('aria-label',visible?'Mostrar senha':'Ocultar senha')});document.querySelector('#forgot-password').addEventListener('click',e=>{e.preventDefault();form.querySelector('.login-feedback').textContent='A recuperação é demonstrativa. Use as credenciais indicadas no README.'});form.addEventListener('submit',e=>{e.preventDefault();const user=demoUsers[form.usuario.value.trim().toLowerCase()];const feedback=form.querySelector('.login-feedback');if(!user||user.senha!==pass.value){feedback.textContent='Usuário ou senha inválidos.';return}localStorage.setItem('fhpSession',JSON.stringify({usuario:form.usuario.value.trim().toLowerCase(),nome:user.nome,nivel:user.nivel}));location.href='painel.html'})});
+document.addEventListener('DOMContentLoaded', () => {
+  if (JSON.parse(localStorage.getItem('fhpSession') || 'null')) location.replace('painel.html');
+  const form = document.querySelector('#login-form'), pass = form.senha, show = document.querySelector('.show-password');
+  const feedback = form.querySelector('.login-feedback'), botao = form.querySelector('button[type=submit]');
+
+  show.addEventListener('click', () => {
+    const visivel = pass.type === 'text';
+    pass.type = visivel ? 'password' : 'text';
+    show.setAttribute('aria-label', visivel ? 'Mostrar senha' : 'Ocultar senha');
+  });
+
+  document.querySelector('#forgot-password').addEventListener('click', e => {
+    e.preventDefault();
+    feedback.textContent = 'A recuperação é demonstrativa. Use as credenciais indicadas no README.';
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    feedback.textContent = '';
+    botao.disabled = true;
+    try {
+      const r = await fhpApi('/login', { method: 'POST', body: { usuario: form.usuario.value, senha: pass.value, lembrar: form.lembrar.checked } });
+      localStorage.setItem('fhpSession', JSON.stringify({ token: r.token, usuario: r.usuario, nome: r.nome, nivel: r.nivel }));
+      location.href = 'painel.html';
+    } catch (err) {
+      feedback.textContent = err.message;
+      botao.disabled = false;
+    }
+  });
+});
